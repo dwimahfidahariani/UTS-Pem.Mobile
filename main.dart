@@ -214,3 +214,68 @@ class QuizScreenState extends State<QuizScreen> {
 
   void _selesaiKuis() {
     _score = _benar * 10;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HasilKuis(score: _score, benar: _benar, salah: _salah),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("QUIZIFY")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Color(0xFFA1BAD2), // Ganti warna background soal
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                _soal[_nomor],
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: 10),
+            ..._option[_nomor].map((option) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFDEE0E4), // Ganti warna background button jawaban
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 4.0),
+                child: RadioListTile(
+                  title: Text(
+                    option,
+                    style: TextStyle(color: Colors.black), // Ubah warna font jawaban jadi hitam
+                  ),
+                  value: option,
+                  groupValue: _selectedOption,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedOption = value.toString();
+                    });
+                  },
+                ),
+              );
+            }),
+            ElevatedButton(
+              onPressed: _selectedOption != null ? _cekJawaban : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF84C567), // Warna tombol diubah ke #84c567
+              ),
+              child: Text("Selanjutnya"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
